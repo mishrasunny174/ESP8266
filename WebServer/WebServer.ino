@@ -45,6 +45,7 @@ void loop() {
             client.println("Content-type:text/html");
             client.println("Connection:close");
             client.println("");
+            client.println("<html>");
             if(header.indexOf("GET /on")>=0){
               digitalWrite(led,HIGH);
               outputState="ON";
@@ -53,9 +54,19 @@ void loop() {
               digitalWrite(led,LOW);
               outputState="OFF";
             }
-            client.print("<h1>LED is: ");
+            client.println("<body>");
+            client.print("<h1>LED is currently ");
             client.print(outputState);
             client.println("</h1>");
+            String button = "";
+            if(outputState=="OFF"){
+              button = "<p><a href=\"/on\"><button>Turn LED ON</button></a></p>";
+            }else{
+              button = "<p><a href=\"/off\"><button>Turn LED OFF</button></a></p>";
+            }
+            client.println(button);
+            client.println("</body>");
+            client.println("</html>");
             client.println();
             break;
           } else {
